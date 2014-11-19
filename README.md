@@ -17,3 +17,5 @@ progress
 - [x] problem 10
 - [ ] problem 11
 - [x] problem 12
+- [x] problem 13
+- [x] problem 20
