@@ -35,13 +35,13 @@ slicesOfLength n xs
     
 lineDiag :: [[a]] -> Int -> [a]
 lineDiag matrix lineNumber = [chopped !! i !! i | i <- [0..(len - 1)]]
-    where chopped = (drop lineNumber matrix)
+    where chopped = drop lineNumber matrix
           len     = min rows cols
           rows    = length chopped
           cols    = length $ head chopped
     
 bottomDiagonals :: [[a]] -> [[a]]
-bottomDiagonals matrix = (map $ lineDiag matrix) [0..((length matrix) - 1)]
+bottomDiagonals matrix = map (lineDiag matrix) [0..((length matrix) - 1)]
 
 diagonals :: [[a]] -> [[a]]
 diagonals matrix = bottomDiagonals matrix ++ (bottomDiagonals . tail . transpose $ matrix)
@@ -54,7 +54,7 @@ allSlices sliceLength mainGrid = concat $ map (slicesOfLength sliceLength) rowLi
     where rowList  = concat gridList
           gridList = sequence [id, transpose, diagonals, counterDiagonals] mainGrid
 
-matrix :: [[Int]]
-matrix = (map $ map read) . (map (splitOn " ")) . lines $ input
+matrix :: String -> [[Int]]
+matrix = map ((map read) . (splitOn " ")) . lines
 
-main = print . maximum . (map product) $ allSlices 4 matrix
+main = print . maximum . (map product) . (allSlices 4) $ matrix input
