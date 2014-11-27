@@ -22,6 +22,8 @@ input = "08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08\n\
 \20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54\n\
 \01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"
 
+-- TODO: scan may be a good fit for addSlice!
+
 addSlice :: [a] -> [[a]] -> [[a]]
 addSlice buf resultList
     | length buf == 0 = resultList
@@ -31,7 +33,7 @@ addSlice buf resultList
 slicesOfLength :: Int -> [a] -> [[a]] 
 slicesOfLength n xs
     | length xs < n = []
-    | otherwise     = addSlice (drop n xs) [(reverse $ take n xs)]
+    | otherwise     = addSlice (drop n xs) [reverse $ take n xs]
     
 lineDiag :: [[a]] -> Int -> [a]
 lineDiag matrix lineNumber = [chopped !! i !! i | i <- [0..(len - 1)]]
@@ -41,7 +43,7 @@ lineDiag matrix lineNumber = [chopped !! i !! i | i <- [0..(len - 1)]]
           cols    = length $ head chopped
     
 bottomDiagonals :: [[a]] -> [[a]]
-bottomDiagonals matrix = map (lineDiag matrix) [0..((length matrix) - 1)]
+bottomDiagonals matrix = map (lineDiag matrix) [0..(length matrix - 1)]
 
 diagonals :: [[a]] -> [[a]]
 diagonals matrix = bottomDiagonals matrix ++ (bottomDiagonals . tail . transpose $ matrix)
