@@ -8,7 +8,7 @@ isCircularPrime :: String -> Bool
 isCircularPrime = (all (isPrime . read)) . rotations
 
 block :: [a] -> Int -> [[a]]
-block chars 1   = [[c] | c <- chars]
+block chars 0   = [[]]
 block chars len = [c:set | c <- chars, set <- nextSet]
     where nextSet = block chars (len - 1)
 
