@@ -13,28 +13,23 @@ negatePrefix (x:y:xs) = (if x < y then negate x else x):(negatePrefix $ y:xs)
 negatePrefix xs       = xs
 
 wordValue :: String -> Maybe Int
-wordValue w = do
-    valueList <- sequence $ fmap charValue w
-    return . sum $ negatePrefix valueList
+wordValue w = fmap (sum . negatePrefix) $ sequence $ fmap charValue w
+    --valueList <- sequence $ fmap charValue w
+    --return . sum $ negatePrefix valueList
 
-getRest :: Int -> String
-getRest n
-    | n == 0           = ""
-    | mod digit 5 == 4 = mapping !> one                    : getRest (n + one)
-    | digit >= 5       = mapping !> (5 * one)              : getRest (n - 5 * one)
-    | otherwise        = replicate digit (mapping !> one) ++ getRest (n - digit * one)
+roman :: Int -> String
+roman n
+    | n == 0           = []
+    | n >= 1000        = replicate (quot n 1000) 'M'      ++ roman (mod n 1000)
+    | mod digit 5 == 4 = mapping !> one                    : roman (n + one)
+    | digit >= 5       = mapping !> (5 * one)              : roman (n - 5 * one)
+    | otherwise        = replicate digit (mapping !> one) ++ roman (n - digit * one)
     where order = length . tail $ show n
           digit = digitToInt . head $ show n
           one = 10^order
-
-roman :: Int -> String
-roman n = replicate (quot n largest) (mapping !> largest) ++ getRest (mod n largest)
-    where largest = maximum $ elems mapping
     
 superfluousChars :: String -> Maybe Int
-superfluousChars w = do
-    value <- wordValue w
-    return $ length w - (length . roman) value
+superfluousChars w = fmap (\x -> length w - (length . roman) x) $ wordValue w
 
 main = do
     file <- openFile "p089_roman.txt" ReadMode
