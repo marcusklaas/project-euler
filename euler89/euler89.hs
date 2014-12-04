@@ -14,8 +14,6 @@ negatePrefix xs       = xs
 
 wordValue :: String -> Maybe Int
 wordValue w = fmap (sum . negatePrefix) $ sequence $ fmap charValue w
-    --valueList <- sequence $ fmap charValue w
-    --return . sum $ negatePrefix valueList
 
 roman :: Int -> String
 roman n
