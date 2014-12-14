@@ -9,17 +9,12 @@ combinations k xs = combinations' (length xs) k xs
 characters :: [Integer]          
 characters = [0..9] ++ [0..9]
 
--- prevent leading zeroes
-permutationsWithZeroCount :: [Integer]
-permutationsWithZeroCount = [
-    product [1..10] * product [1..10],
-    9 * product [1..9] * product [1..10],
-    8 * product [1..9] * product [1..10]
-    ]
+permutationsCount :: Integer
+permutationsCount = product $ [2..9] ++ [2..10]
 
 perms :: [Integer] -> Integer
 perms xs = quot total (2^10)
-    where total = permutationsWithZeroCount !! (length $ filter (== 0) xs)
+    where total = permutationsCount * (-) 10 (toInteger . length $ filter (== 0) xs)
     
 divisible :: [Integer] -> Bool
 divisible xs = (90 - 2 * sum xs) `mod` 11 == 0
