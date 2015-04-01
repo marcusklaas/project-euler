@@ -14,4 +14,4 @@ helper len index
 champernownDigit :: Int -> Int
 champernownDigit index = helper 1 (index - 1)
 
-main = print . product . (map champernownDigit) $ map (10^) [0..6]
+main = print . product $ map (champernownDigit . (10^)) [0..6]
